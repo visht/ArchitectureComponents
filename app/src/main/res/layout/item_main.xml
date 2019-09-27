@@ -1,19 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/nametext"
-        android:layout_width="match_parent"
-        android:gravity="center"
-        android:layout_height="40dp" />
+    <data>
 
-    <TextView
-        android:id="@+id/agetext"
+        <variable
+            name="user"
+            type="com.affluencesystems.testthis.room.models.User" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_height="40dp" />
-</LinearLayout>
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/nametext"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="@{user.name}" />
+
+        <TextView
+            android:id="@+id/agetext"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="@{user.age}" />
+    </LinearLayout>
+</layout>

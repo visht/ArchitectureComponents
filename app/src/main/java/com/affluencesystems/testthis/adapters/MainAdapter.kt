@@ -4,16 +4,17 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.affluencesystems.testthis.R
+import com.affluencesystems.testthis.databinding.ItemMainBinding
 import com.affluencesystems.testthis.room.models.User
 
-class MainAdapter(context: Context, list: List<User>) :
+
+class MainAdapter(context: Context, private var listUsers: List<User>) :
     RecyclerView.Adapter<MainAdapter.Holder>() {
 
     private var mContext: Context = context
-    private var listUsers: List<User> = list
 
     /**
      * Called when RecyclerView needs a new [Holder] of the given type to represent
@@ -38,7 +39,15 @@ class MainAdapter(context: Context, list: List<User>) :
      * @see .getItemViewType
      * @see .onBindViewHolder
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder = Holder(LayoutInflater.from(mContext).inflate(R.layout.item_main, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        var itemMainBinding = DataBindingUtil.inflate<ItemMainBinding>(
+            LayoutInflater.from(mContext),
+            R.layout.item_main,
+            parent,
+            false
+        )
+        return Holder(itemMainBinding)
+    }
 
     /**
      * Returns the total number of items in the data set held by the adapter.
@@ -71,16 +80,17 @@ class MainAdapter(context: Context, list: List<User>) :
      * @param position The position of the item within the adapter's data set.
      */
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.name.setText(listUsers.get(position).name)
-        holder.age.setText(listUsers.get(position).age)
+        holder.itemMainBinding.user = listUsers.get(position)
+        holder.itemMainBinding.executePendingBindings()
     }
 
     fun setData(t: List<User>?) {
         listUsers = t!!
+        notifyDataSetChanged()
     }
 
-    class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var name = itemView.findViewById<TextView>(R.id.nametext)
-        var age = itemView.findViewById<TextView>(R.id.agetext)
+    class Holder(binding: ItemMainBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        val itemMainBinding: ItemMainBinding = binding
     }
 }
